@@ -1,24 +1,36 @@
-import {React,useState} from 'react'
-import { Form, Input, Button, Card, Row, Col, Upload } from "antd";
-import {
-  HomeTwoTone,
-  FileAddTwoTone,
-  PushpinTwoTone,
-} from "@ant-design/icons";
+import { React, useState } from "react";
+import { Form, Input, Button, Card, Row, Col, Upload,Select } from "antd";
+import { HomeTwoTone,UserOutlined,MailOutlined,PhoneOutlined,NumberOutlined} from "@ant-design/icons";
 const AddRecipient = () => {
-    const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(false);
   const [fileList, setfileList] = useState([]);
+  const [proof, setproof] = useState("");
+  const [values,setValues] = useState({
+    proof:null,
+    accType:null
+  })
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
+  const rooms = ["Single","Double"];
+  const idProof = ["Aadhar","Pan-card","Driving Licence"]
+  const {Option} = Select
   const handleUpload = ({ fileList }) => {
-    console.log("fileList", fileList);
     setfileList(fileList);
   };
-    const cardstyle = {
-        width: "100%",
-        height: "auto",
-      };
+  const accTypeChange = (e)=>{
+    setValues({
+      ...values,
+      accType:e
+    })
+  }
+  const proofChange = (e)=>{
+        setproof(e)
+  }
+  const cardstyle = {
+    width: "100%",
+    height: "auto",
+  };
 
   return (
     <>
@@ -41,102 +53,140 @@ const AddRecipient = () => {
             >
               <Form.Item
                 name="name"
-                label="Apartment Name"
+                label="Name"
                 rules={[
                   {
                     required: true,
-                    message: "Please Enter Apartment Name!",
+                    message: "Please Enter Your Name!",
                   },
                 ]}
               >
                 <Input
-                  suffix={<HomeTwoTone className="site-form-item-icon" />}
-                  placeholder="Apartment Name"
+                  suffix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Name"
                 />
               </Form.Item>
               <Form.Item
-                name="single-room"
+                name="email"
                 rules={[
                   {
                     required: true,
-                    message: "Please Enter single Rooms",
+                    message: "Please Enter Email",
                   },
                 ]}
-                label="Single Rooms"
+                label="Email"
               >
                 <Input
-                  suffix={<FileAddTwoTone className="site-form-item-icon" />}
-                  type="text"
-                  placeholder="Ex: 101,102,103"
+                  suffix={<MailOutlined  className="site-form-item-icon" />}
+                  type="email"
+                  placeholder="example@gmail.com"
                 />
               </Form.Item>
               <Form.Item
-                name="double-room"
+                name="phone-number"
                 rules={[
                   {
                     required: true,
-                    message: "Please Enter Double Rooms",
+                    message: "Please Enter Phone Number",
                   },
                 ]}
-                label="Double Rooms"
+                label="Phone Number"
               >
                 <Input
-                  suffix={<FileAddTwoTone className="site-form-item-icon" />}
-                  type="text"
-                  placeholder="Ex: 101,102,103"
+                  suffix={<PhoneOutlined className="site-form-item-icon" />}
+                  type="number"
+                  placeholder="Ex:1234567890"
                 />
               </Form.Item>
               <Form.Item
-                name="location"
+                name="id-proof"
                 rules={[
                   {
                     required: true,
-                    message: "Please Enter Location",
+                    message: "Please Select Your Id Proof",
                   },
                 ]}
-                label="Location"
+                label="Id Proof"
               >
-                <Input
-                  suffix={<PushpinTwoTone className="site-form-item-icon" />}
-                  type="text"
-                  placeholder="Please Enter Location Link of the Apartment "
-                />
+                <Select
+                  mode="single"
+                  size="middle"
+                  placeholder="Please Select Accomidation type"
+                  onChange={proofChange}
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  {idProof.map((proof)=>{
+                    return <Option key={proof}>{proof}</Option>
+                  })}
+                </Select>
               </Form.Item>
-              <Form.Item
-                name="location-text"
+
+              {proof && <Form.Item
+                name="id-proof-num"
                 rules={[
                   {
                     required: true,
-                    message: "Please Enter Location",
+                    message: "Please Enter Valid Number",
                   },
                 ]}
-                label="Location Subtext"
+                label={`${proof} Number`}
               >
                 <Input
-                  //suffix={<LockOutlined className="site-form-item-icon" />}
-                  type="link"
-                  placeholder="Little sub-text About Location"
+                  suffix={<NumberOutlined className="site-form-item-icon" />}
+                  placeholder={`Enter Your ${proof} Number`}
                 />
-              </Form.Item>
-              <Form.Item
-              name="image"
-              label="Upload Image"
-              rules={[{
-                required:true,
-                message:"Please Upload Image"
-              }]}
-              >
-              <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onChange={handleUpload}
-                beforeUpload={() => false}
-                // return false so that antd doesn't upload the picture right away
-              >
-                <Button>Add</Button>
-              </Upload>
-              </Form.Item>
+              </Form.Item> }
               
+                    
+              <Form.Item
+                name="acc-type"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please Enter Location",
+                  },
+                ]}
+                label="Accomitation Type"
+              >
+                <Select
+                  mode="single"
+                  size="middle"
+                  placeholder="Please Select Accomidation type"
+                  onChange={accTypeChange}
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  {rooms.map((room)=>{
+                    return <Option key={room}>{room}</Option>
+                  })}
+                </Select>
+              </Form.Item>
+              {
+                values.accType && 
+                <Form.Item 
+                name={"rooms"}
+                required= {true}
+                label={`please select ${values.accType} room`}
+                >
+                  <Select
+                  mode="single"
+                  size="middle"
+                  placeholder="Please Select Accomidation type"
+                  onChange={accTypeChange}
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  {rooms.map((room)=>{
+                    return <Option key={room}>{room}</Option>
+                  })}
+                </Select>
+                </Form.Item>
+              }
+
               <div className="d-flex justify-content-center">
                 <Form.Item>
                   <Button
@@ -145,7 +195,7 @@ const AddRecipient = () => {
                     className="login-form-button"
                     loading={loading}
                   >
-                    Add Apartment
+                    Add User
                   </Button>
                 </Form.Item>
               </div>
@@ -154,7 +204,7 @@ const AddRecipient = () => {
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default AddRecipient
+export default AddRecipient;
