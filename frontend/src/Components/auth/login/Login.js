@@ -1,8 +1,10 @@
 import {React,useEffect,useState} from 'react'
-import { Form, Input, Button, Card } from "antd";
+import { Form, Input, Button, Card,message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import {Link, useNavigate} from 'react-router-dom';
+import { API } from '../../../environments/environment';
 
+import axios from 'axios';
 
   const cardStyle = {
     height: "400px",
@@ -14,13 +16,22 @@ import {Link, useNavigate} from 'react-router-dom';
 const Login = () => {
   const navigate = new useNavigate()
     const [credentials, setcredentials] = useState([]);
+    const [loading, setloading] = useState(false);
     useEffect(()=>{
-        console.log("use effect called")
     },[credentials])
-    const onFinish = (values) => {
-        console.log("Received values of form: ", values);
+    const onFinish = async (values) => {
+      setloading(true)
+        await axios.post(`${API}users/authenticate`,values).then((res)=>{
+          if(res.status === 200){
+            setloading(false)
+            message.success('Logged in Succesfully',7);
+            navigate('/home/summary')
+          }
+        }).catch((res)=>{
+          setloading(false)
+          message.error(res.response.data.message,7);
+        })
         setcredentials(values);
-        navigate('/home/summary')
       };
     
     
@@ -80,6 +91,7 @@ const Login = () => {
                       htmlType="submit"
                       className="login-form-button"
                       // onClick={login}
+                      loading={loading}
                     >
                       Log in
                     </Button>

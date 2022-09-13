@@ -7,6 +7,7 @@ import Summary from './Components/Home/Summary';
 import Admin from './Components/Home/Admin';
 import AddAppartment from './Components/add-apprtment/AddAppartment';
 import AddRecipient from './Components/add-recipient/Add-recipient';
+import Rooms from './Components/rooms/rooms';
 const Router = () => {
   return (
       <Routes>
@@ -16,6 +17,7 @@ const Router = () => {
         <Route path="/home/summary" exact element={<Summary/>}></Route>
         <Route path="/home/admin" exact element={<Admin/>}></Route>
         <Route path='/home/admin/add-apartment' exact element={<AddAppartment/>}></Route>
+        <Route path='/home/admin/appartment/:id' exact element={<Rooms/>}></Route>
         <Route path='/home/admin/add-recipient' exact element={<AddRecipient/>}></Route>
       </Route>
       </Routes>
