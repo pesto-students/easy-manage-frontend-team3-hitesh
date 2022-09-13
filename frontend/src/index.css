@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px !important;
+}
+
+
+
+code {
+  font-family: 'Poppins', sans-serif;
+}
+
+svg {
+  vertical-align: initial !important;
+}
+
+.root-style{
+  height: 100%;
+  background-color: #dbe8f3;
+}
+

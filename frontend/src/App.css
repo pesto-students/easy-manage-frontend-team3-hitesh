@@ -1,0 +1,17 @@
+
+.apartment> .ant-card-cover > *{
+    /* width: 300px; */
+}
+.ant-table {
+  overflow: auto;
+}
+@media screen and (max-width : 480px) {
+  .ant-card{
+    display: flex;
+    border-radius: 28px;
+    width: 100%;
+    height: 130px;
+    place-content: center;
+    margin-bottom: 1rem;
+  }
+}
